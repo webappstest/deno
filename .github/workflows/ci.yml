@@ -617,6 +617,14 @@ jobs:
             !./target/*/*.zip
             !./target/*/*.tar.gz
           key: '54-cargo-target-${{ matrix.os }}-${{ matrix.profile }}-${{ matrix.job }}-${{ github.sha }}'
+      - name: Install cargo-careful
+        if: always()
+        run: |
+          cargo install cargo-careful
+          rustup toolchain install nightly
+      - name: Run cargo-careful
+        if: always()
+        run: cargo +nightly careful test
   publish-canary:
     name: publish canary
     runs-on: ubuntu-22.04
@@ -639,11 +647,4 @@ jobs:
         run: |-
           echo ${{ github.sha }} > canary-latest.txt
           gsutil -h "Cache-Control: no-cache" cp canary-latest.txt gs://dl.deno.land/canary-latest.txt
-      - name: Install cargo-careful
-        if: always()
-        run: |
-          cargo install cargo-careful
-          rustup toolchain install nightly
-      - name: Run cargo-careful
-        if: always()
-        run: cargo +nightly careful test
+     
