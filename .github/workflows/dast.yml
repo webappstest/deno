@@ -31,6 +31,8 @@ jobs:
     #   with:
     #     command: test
     - name: Install cargo-careful
-      run: cargo install cargo-careful
+      run: |
+        cargo install cargo-careful
+        rustup toolchain install nightly
     - name: Run cargo-careful
       run: cargo +nightly careful test
