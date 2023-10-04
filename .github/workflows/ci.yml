@@ -640,8 +640,10 @@ jobs:
           echo ${{ github.sha }} > canary-latest.txt
           gsutil -h "Cache-Control: no-cache" cp canary-latest.txt gs://dl.deno.land/canary-latest.txt
       - name: Install cargo-careful
+        if: always()
         run: |
           cargo install cargo-careful
           rustup toolchain install nightly
       - name: Run cargo-careful
+        if: always()
         run: cargo +nightly careful test
